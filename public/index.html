@@ -3077,8 +3077,8 @@ section + section::before {
   stroke-width: 3.5;
   stroke-linecap: round;
   fill: none;
-  stroke-dasharray: 126;
-  stroke-dashoffset: 126;
+  stroke-dasharray: 113.1;
+  stroke-dashoffset: 113.1;
   transition: stroke-dashoffset 0.1s linear;
 }
 
@@ -3541,7 +3541,7 @@ footer {
 
           <div class="hero-greeting-row">
             <div class="hero-mini-avatar" id="hero-mini-avatar" title="Click to view Profile">
-              <img src="/assets/niti.jpg" alt="Niti Khandelwal">
+              <img src="assets/niti.jpg" alt="Niti Khandelwal">
               <span class="pulse-dot"></span>
             </div>
             <div class="hero-greeting">
@@ -3631,7 +3631,7 @@ footer {
                   <div class="card-glare"></div>
                   <div class="hologram-scanline" id="hologram-scanline"></div>
                   <div class="hologram-photo-container">
-                    <img src="/assets/niti.jpg" alt="Niti Khandelwal" class="hologram-photo" id="hologram-photo">
+                    <img src="assets/niti.jpg" alt="Niti Khandelwal" class="hologram-photo" id="hologram-photo">
                   </div>
                   <div class="hud-bracket bracket-tl"></div>
                   <div class="hud-bracket bracket-tr"></div>
@@ -4354,7 +4354,7 @@ footer {
       <div class="github-header-card border-beam-box">
         <div class="card-glare"></div>
         <div class="github-profile-info">
-          <img src="/assets/niti.jpg" alt="Niti Khandelwal" class="github-avatar" onerror="this.src='https://avatars.githubusercontent.com/u/161491754?v=4'">
+          <img src="assets/niti.jpg" alt="Niti Khandelwal" class="github-avatar" onerror="this.src='https://avatars.githubusercontent.com/u/161491754?v=4'">
           <div class="github-user-details">
             <div style="display:flex; align-items:center; gap:8px;">
               <h3>Niti Khandelwal</h3>
@@ -4583,7 +4583,7 @@ footer {
   <button id="scroll-ring-btn" aria-label="Scroll to top" title="Scroll to top">
     <svg class="ring-svg" viewBox="0 0 44 44">
       <circle class="ring-circle-bg" cx="22" cy="22" r="18"></circle>
-      <circle class="ring-circle-val" id="ring-circle-val" cx="22" cy="22" r="18"></circle>
+      <circle class="ring-circle-val" id="scroll-ring-circle" cx="22" cy="22" r="18"></circle>
     </svg>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
   </button>
@@ -4663,7 +4663,11 @@ footer {
             </tr>
             <tr>
               <td>Toggle Synthesizer Sound</td>
-              <td style="text-align:right;"><span class="shortcut-kbd">S</span></td>
+              <td style="text-align:right;"><span class="shortcut-kbd">M</span> / <span class="shortcut-kbd">S</span></td>
+            </tr>
+            <tr>
+              <td>Quick Copy Email</td>
+              <td style="text-align:right;"><span class="shortcut-kbd">E</span></td>
             </tr>
             <tr>
               <td>Switch Accent Palette (1-5)</td>
@@ -4708,7 +4712,7 @@ footer {
             <div class="dossier-photo-card border-beam-box" id="dossier-photo-card" data-lens="cyber">
               <div class="card-glare"></div>
               <div class="hologram-scanline"></div>
-              <img src="/assets/niti.jpg" alt="Niti Khandelwal" class="dossier-photo" id="dossier-photo">
+              <img src="assets/niti.jpg" alt="Niti Khandelwal" class="dossier-photo" id="dossier-photo">
               <div class="hud-bracket bracket-tl"></div>
               <div class="hud-bracket bracket-tr"></div>
               <div class="hud-bracket bracket-bl"></div>
@@ -4789,9 +4793,14 @@ footer {
             <h3 style="font-size:22px; font-weight:800; color:#fff;">Niti Khandelwal — Resume</h3>
             <p style="font-size:13px; color:var(--ink-secondary);">Full Stack Developer &bull; BCA Data Science</p>
           </div>
-          <button class="skiper-btn btn-primary btn-sm" id="cv-download-direct-btn">
-            <span>Download PDF</span>
-          </button>
+          <div style="display:flex; gap:8px;">
+            <button class="skiper-btn btn-ghost btn-sm" id="cv-print-btn" title="Print or Save as PDF">
+              <span>Print / Save PDF</span>
+            </button>
+            <button class="skiper-btn btn-primary btn-sm" id="cv-download-direct-btn" title="Download Text Resume">
+              <span>Download (.txt)</span>
+            </button>
+          </div>
         </div>
 
         <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:20px; font-size:13px; color:#cbd5e1; line-height:1.7;">
@@ -4960,7 +4969,8 @@ footer {
   const scrollProg = document.getElementById('scroll-progress');
   const scrollRingBtn = document.getElementById('scroll-ring-btn');
   const scrollRingCircle = document.getElementById('scroll-ring-circle');
-  const ringCircumference = 2 * Math.PI * 20; // 125.66
+  const ringRadius = scrollRingCircle ? (parseFloat(scrollRingCircle.getAttribute('r')) || 18) : 18;
+  const ringCircumference = 2 * Math.PI * ringRadius;
 
   if (scrollRingCircle) {
     scrollRingCircle.style.strokeDasharray = ringCircumference;
@@ -4994,8 +5004,11 @@ footer {
   }
 
   // ========================================================
-  // 4. AMBIENT PARTICLES CANVAS
+  // 4. AMBIENT PARTICLES CANVAS & CURSOR TRACKING
   // ========================================================
+  let mouseX = -100, mouseY = -100;
+  let curX = -100, curY = -100;
+
   const ambCanvas = document.getElementById('ambient-canvas');
   if (ambCanvas) {
     const ctx = ambCanvas.getContext('2d');
@@ -5077,8 +5090,6 @@ footer {
   // ========================================================
   const cursor = document.getElementById('cursor');
   const cursorDot = document.getElementById('cursor-dot');
-  let mouseX = -100, mouseY = -100;
-  let curX = -100, curY = -100;
 
   window.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
@@ -7231,6 +7242,15 @@ footer {
     });
   }
 
+  if (dsaSpeedSelect) {
+    dsaSpeedSelect.addEventListener('change', () => {
+      if (isPlaying) {
+        stopDsaAutoPlay();
+        startDsaAutoPlay();
+      }
+    });
+  }
+
   if (dsaArrayInput) dsaArrayInput.addEventListener('change', initDsaSteps);
   if (dsaTargetInput) dsaTargetInput.addEventListener('change', initDsaSteps);
 
@@ -7615,27 +7635,28 @@ footer {
   }
 
   const paletteItems = [
-    { title: 'Navigate to Hero & About', section: 'about', shortcut: '1' },
-    { title: 'Navigate to Experience & Milestones', section: 'experience', shortcut: '2' },
-    { title: 'Navigate to Featured Projects', section: 'projects', shortcut: '3' },
-    { title: 'Navigate to Skills Dashboard', section: 'skills', shortcut: '4' },
-    { title: 'Navigate to DSA Playground & Arena', section: 'dsa-playground', shortcut: '5' },
-    { title: 'Navigate to GitHub Activity & Repos', section: 'github', shortcut: '6' },
-    { title: 'Navigate to Contact Form', section: 'contact', shortcut: '7' },
+    { title: 'Navigate to Hero & About', section: 'about' },
+    { title: 'Navigate to Experience & Milestones', section: 'experience' },
+    { title: 'Navigate to Featured Projects', section: 'projects', shortcut: 'P' },
+    { title: 'Navigate to Skills Dashboard', section: 'skills' },
+    { title: 'Navigate to DSA Playground & Arena', section: 'dsa-playground', shortcut: 'D' },
+    { title: 'Navigate to GitHub Activity & Repos', section: 'github' },
+    { title: 'Navigate to Contact Form', section: 'contact' },
+    { title: 'Focus Interactive Terminal', action: () => { switchConsoleTab('term'); const tInput = document.getElementById('term-input'); if (tInput) tInput.focus(); }, shortcut: 'T' },
+    { title: 'View Developer Profile & Bio', action: () => openHologramDossier(), shortcut: 'H' },
     { title: 'View Project: AssetFlow', action: () => openProjectModal('assetflow') },
     { title: 'View Project: Careerly AI', action: () => openProjectModal('careerly') },
     { title: 'View Project: DevMatrix DSA', action: () => openProjectModal('devmatrix') },
     { title: 'View Project: PulseAPI Gateway', action: () => openProjectModal('pulseapi') },
-    { title: 'Switch Accent: Violet Nebula', action: () => applyTheme('violet') },
-    { title: 'Switch Accent: Cyber Cyan', action: () => applyTheme('cyan') },
-    { title: 'Switch Accent: Matrix Emerald', action: () => applyTheme('emerald') },
-    { title: 'Switch Accent: Amber Flare', action: () => applyTheme('amber') },
-    { title: 'Switch Accent: Crimson Neon', action: () => applyTheme('rose') },
-    { title: 'View Developer Profile & Bio', action: () => openHologramDossier() },
+    { title: 'Switch Accent: Violet Nebula', action: () => applyTheme('violet'), shortcut: '1' },
+    { title: 'Switch Accent: Cyber Cyan', action: () => applyTheme('cyan'), shortcut: '2' },
+    { title: 'Switch Accent: Matrix Emerald', action: () => applyTheme('emerald'), shortcut: '3' },
+    { title: 'Switch Accent: Amber Flare', action: () => applyTheme('amber'), shortcut: '4' },
+    { title: 'Switch Accent: Crimson Neon', action: () => applyTheme('rose'), shortcut: '5' },
     { title: 'Trigger Interactive Photo Scan', action: () => btnTriggerScan && btnTriggerScan.click() },
-    { title: 'Toggle Ambient Synthesizer Audio', action: () => soundBtn && soundBtn.click() },
+    { title: 'Toggle Ambient Synthesizer Audio', action: () => soundBtn && soundBtn.click(), shortcut: 'M' },
     { title: 'Preview & Download CV Resume', action: () => openCvModal() },
-    { title: 'Copy Email Address', action: () => copyEmailCard && copyEmailCard.click() }
+    { title: 'Copy Email Address', action: () => copyEmailCard && copyEmailCard.click(), shortcut: 'E' }
   ];
 
   function openCommandPalette() {
@@ -7735,7 +7756,9 @@ footer {
       } else if (e.key.toLowerCase() === 'd') {
         const dSec = document.getElementById('dsa-playground');
         if (dSec) dSec.scrollIntoView({ behavior: 'smooth' });
-      } else if (e.key.toLowerCase() === 's') {
+      } else if (e.key.toLowerCase() === 'e') {
+        if (copyEmailCard) copyEmailCard.click();
+      } else if (e.key.toLowerCase() === 's' || e.key.toLowerCase() === 'm') {
         if (soundBtn) soundBtn.click();
       } else if (e.key === '1') {
         applyTheme('violet'); playTone(440);
@@ -7819,6 +7842,13 @@ footer {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       playTone(880);
+    });
+  }
+
+  const cvPrintBtn = document.getElementById('cv-print-btn');
+  if (cvPrintBtn) {
+    cvPrintBtn.addEventListener('click', () => {
+      window.print();
     });
   }
 

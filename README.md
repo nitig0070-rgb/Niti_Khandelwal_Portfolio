@@ -25,7 +25,7 @@ Built for **Future Interns** (Full Stack Web Development, Task 1).
   - Neo-glass form connected to Node.js backend.
   - Particle confetti celebration burst on message delivery!
 - 🔊 **Web Audio Synthesizer**: Subtle haptic sound effects on clicks, theme changes, and transmissions (with mute toggle).
-- 🌓 **Dynamic Theme Engine**: Obsidian Dark Mode and Clean Light Mode with smooth transition.
+- 🌓 **Dynamic Theme Engine**: 5 dynamic accent themes (Violet Nebula, Cyber Cyan, Matrix Emerald, Amber Flare, Crimson Neon) with persistent preference storage.
 - 🛡️ **Security & Anti-Spam**: Sliding-window rate limiting (5 requests / 15 minutes) and honeypot traps.
 
 ---
@@ -62,7 +62,12 @@ Open **http://localhost:3000** in your browser.
 | Shortcut | Action |
 | :--- | :--- |
 | `Ctrl + K` or `⌘ + K` | Open Skiper UI Command Palette |
-| `Esc` | Close Command Palette or Project Modal |
-| `T` | Toggle Light / Dark Theme |
-| `M` | Toggle Audio Synthesizer |
+| `Esc` | Close Active Modal / Command Palette |
+| `T` | Focus Interactive Terminal |
+| `H` | View Developer Profile & Hologram Dossier |
+| `P` | Jump to Featured Projects |
+| `D` | Jump to DSA Arena & Algorithm Playground |
+| `M` or `S` | Toggle Audio Synthesizer |
 | `E` | Quick-copy email address |
+| `1` - `5` | Switch dynamic accent themes (Violet, Cyan, Emerald, Amber, Rose) |
+| `?` | Open Keyboard Shortcuts Help Sheet |
