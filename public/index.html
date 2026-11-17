@@ -121,6 +121,8 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 90px;
   color-scheme: dark;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
@@ -128,6 +130,7 @@ body {
   color: var(--ink-primary);
   font-family: var(--font-sans);
   line-height: 1.6;
+  max-width: 100vw;
   overflow-x: hidden;
   position: relative;
   -webkit-font-smoothing: antialiased;
@@ -3176,6 +3179,60 @@ section + section::before {
 }
 
 /* Architecture flow SVG diagram */
+.arch-flow-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  flex-wrap: wrap;
+}
+.arch-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  flex: 1;
+  min-width: 110px;
+}
+.arch-box small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  margin-top: 4px;
+}
+.modal-prob-sol-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+@media (max-width: 600px) {
+  .modal-prob-sol-grid {
+    grid-template-columns: 1fr;
+  }
+  .arch-flow-wrap {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .arch-box {
+    width: 100%;
+    min-width: 0;
+  }
+  .arch-arrow {
+    transform: rotate(90deg);
+    margin: 2px 0;
+  }
+}
+
 .arch-diagram-box {
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid var(--border-subtle);
@@ -3353,12 +3410,33 @@ footer {
 }
 
 /* ========================================================
-   RESPONSIVENESS (MOBILE / TABLET BREAKPOINTS)
+   RESPONSIVENESS (MOBILE / TABLET / LAPTOP BREAKPOINTS)
    ======================================================== */
 @media (max-width: 1024px) {
+  #dock-nav {
+    max-width: calc(100vw - 28px);
+  }
+  .dock-links, 
+  .dock-actions .dock-btn:not(#sound-toggle-btn), 
+  .theme-picker-dock {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: flex !important;
+  }
   .hero-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 36px;
+  }
+  .hero-console-card {
+    height: auto;
+    min-height: 480px;
+  }
+  .console-body {
+    min-height: 440px;
+  }
+  .hologram-view {
+    justify-content: flex-start;
   }
   .bento-col-8, .bento-col-4, .bento-col-6 {
     grid-column: span 12;
@@ -3372,38 +3450,281 @@ footer {
   }
   .contact-layout {
     grid-template-columns: 1fr;
+    gap: 28px;
   }
 }
 
 @media (max-width: 768px) {
-  .hero-console-card {
-    height: auto;
-    min-height: 480px;
+  section {
+    padding: 60px 0;
+  }
+  #about {
+    padding-top: 100px;
+    padding-bottom: 40px;
+  }
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .hero-actions {
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .hero-actions .skiper-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-width: 130px;
+  }
+  .hero-stats {
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: 18px;
+  }
+  .hero-stat-item {
+    flex: 1 1 90px;
   }
   .hologram-stage {
     grid-template-columns: 1fr;
     gap: 16px;
+    text-align: center;
   }
-  .dock-links, .dock-actions .dock-btn:not(#sound-toggle-btn) {
-    display: none;
+  .hologram-avatar-card {
+    width: 160px;
+    height: 215px;
+    margin: 0 auto;
   }
-  .theme-picker-dock {
-    display: none;
+  .dev-specs-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
-  .mobile-menu-btn {
-    display: flex;
+  .console-body {
+    max-height: 560px;
+    overflow-y: auto;
+  }
+  
+  /* 3D Coverflow Mobile Optimization (prevents side cards from overlapping) */
+  .coverflow-stage {
+    height: auto;
+    min-height: 430px;
+    perspective: none;
+  }
+  .coverflow-item {
+    width: min(100%, 480px);
+    position: relative;
+  }
+  .coverflow-item.active {
+    position: relative;
+    transform: none !important;
+    opacity: 1 !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 25px var(--accent-glow);
+  }
+  .coverflow-item.prev,
+  .coverflow-item.next {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  .coverflow-item.hidden-card {
+    display: none !important;
+  }
+  .project-actions {
+    flex-wrap: wrap;
+    gap: 10px;
   }
   #projects-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
   .skills-categories-grid {
     grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .skill-category-card {
+    padding: 18px 16px;
+  }
+  .dsa-presets-bar {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+  .preset-pills-wrap {
+    flex-wrap: wrap;
+    gap: 6px;
   }
   .dsa-array-container {
-    height: 180px;
+    height: 170px;
+    padding: 18px 4px 24px;
+    gap: 5px;
+    overflow-x: auto;
   }
-  .hero-console-card {
-    height: 440px;
+  .dsa-node {
+    max-width: 36px;
+    min-width: 22px;
+  }
+  .dsa-node .node-val {
+    font-size: 11px;
+  }
+  .dsa-node .node-idx {
+    font-size: 9px;
+    bottom: -18px;
+  }
+  .dsa-node .node-ptr {
+    top: -20px;
+    font-size: 9px;
+    padding: 1px 3px;
+  }
+  .dsa-live-stats {
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 11px;
+  }
+  .dsa-code-panel {
+    padding: 16px;
+  }
+  .code-lines-area {
+    max-height: 260px;
+    font-size: 11px;
+  }
+  .github-header-card {
+    padding: 18px 16px;
+    gap: 16px;
+  }
+  .github-stats-row {
+    flex-wrap: wrap;
+    gap: 14px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .github-stat {
+    flex: 1 1 65px;
+  }
+  .heatmap-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .contact-form-card {
+    padding: 22px 16px;
+  }
+  .topic-pills-row {
+    gap: 6px;
+  }
+  .topic-pill {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+  .modal-dialog {
+    max-height: 92vh;
+    margin: 10px;
+    width: calc(100% - 20px);
+    border-radius: var(--radius-lg);
+  }
+  .modal-body {
+    padding: 20px 14px;
+  }
+  #mobile-drawer {
+    overflow-y: auto;
+    max-width: 85vw;
+  }
+  #scroll-ring-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .hero-title {
+    font-size: clamp(28px, 6.5vw, 36px);
+  }
+  .hero-name-gradient {
+    display: inline-block;
+    word-break: break-word;
+  }
+  .hero-role-wrapper {
+    font-size: 14px;
+  }
+  .console-header {
+    padding: 8px 12px;
+  }
+  .window-dots {
+    display: none;
+  }
+  .console-tab-btn {
+    padding: 4px 7px;
+    font-size: 11px;
+  }
+  .in-short-card {
+    padding: 20px 14px;
+  }
+  .in-short-statement {
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+  .interactive-pill {
+    margin: 2px 0;
+  }
+  .numbers-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .number-card {
+    padding: 16px 16px;
+  }
+  .timeline-item {
+    gap: 12px;
+  }
+  .timeline-dot {
+    width: 30px;
+    height: 30px;
+    font-size: 11px;
+  }
+  .timeline-content {
+    padding: 14px 12px;
+  }
+  .timeline-title {
+    font-size: 16px;
+  }
+  .lc-stats-grid {
+    gap: 6px;
+  }
+  .lc-box {
+    padding: 8px 4px;
+  }
+  .lc-count {
+    font-size: 19px;
+  }
+  .github-profile-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .github-avatar {
+    width: 52px;
+    height: 52px;
+  }
+  .project-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .project-actions .skiper-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .modal-close-btn {
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+  }
+  #scroll-ring-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 42px;
+    height: 42px;
   }
 }
 
@@ -3889,7 +4210,7 @@ footer {
         </p>
 
         <!-- Filter pills for Experience -->
-        <div style="display:flex; justify-content:center; gap:8px; margin-top:20px;">
+        <div class="filter-pills" style="justify-content:center; margin-top:20px;">
           <button class="filter-pill active" data-exp-filter="all">All Milestones</button>
           <button class="filter-pill" data-exp-filter="internships">Internships (2)</button>
           <button class="filter-pill" data-exp-filter="academics">Degree &amp; Studies</button>
@@ -4477,8 +4798,8 @@ footer {
           </div>
 
           <!-- Social Links -->
-          <div style="display:flex; gap:12px;">
-            <a href="https://github.com/nitig0070-rgb" target="_blank" rel="noopener noreferrer" class="skiper-btn btn-secondary" style="flex:1;">
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="https://github.com/nitig0070-rgb" target="_blank" rel="noopener noreferrer" class="skiper-btn btn-secondary" style="flex:1; min-width:130px;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
               <span>GitHub</span>
             </a>
@@ -5944,6 +6265,34 @@ footer {
     });
   }
 
+  // Mobile Touch Swipe for Coverflow Stage
+  if (coverflowStage) {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    coverflowStage.addEventListener('touchstart', (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        touchStartX = e.changedTouches[0].screenX;
+      }
+    }, { passive: true });
+    coverflowStage.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        const filtered = getFilteredProjects();
+        if (Math.abs(diff) > 45 && filtered.length > 0) {
+          if (diff > 0) {
+            currentCoverflowIdx = (currentCoverflowIdx + 1) % filtered.length;
+            playTone(450);
+          } else {
+            currentCoverflowIdx = (currentCoverflowIdx - 1 + filtered.length) % filtered.length;
+            playTone(380);
+          }
+          renderCoverflow();
+        }
+      }
+    }, { passive: true });
+  }
+
   const viewCoverflowBtn = document.getElementById('view-coverflow-btn');
   const viewGridBtn = document.getElementById('view-grid-btn');
   const coverflowContainer = document.getElementById('coverflow-container');
@@ -6115,7 +6464,7 @@ footer {
           archSvg +
         '</div>' +
 
-        '<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;">' +
+        '<div class="modal-prob-sol-grid">' +
           '<div style="background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.2); border-radius:var(--radius-md); padding:16px;">' +
             '<h4 style="font-size:14px; font-weight:700; color:#f87171; margin-bottom:6px;">Problem Statement</h4>' +
             '<p style="font-size:13px; color:#e2e8f0; line-height:1.5;">' + proj.problem + '</p>' +
@@ -6147,7 +6496,7 @@ footer {
       '</div>' +
 
       // Action Footer
-      '<div style="display:flex; gap:12px; border-top:1px solid var(--border-subtle); padding-top:20px;">' +
+      '<div style="display:flex; gap:12px; border-top:1px solid var(--border-subtle); padding-top:20px; flex-wrap:wrap;">' +
         '<a href="' + proj.github + '" target="_blank" rel="noopener noreferrer" class="skiper-btn btn-primary">' +
           '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>' +
           '<span>View GitHub Repository</span>' +
